@@ -54,13 +54,16 @@ export default function Navigation() {
                   <Link href="/" className="text-foreground hover:text-primary transition-colors" data-testid="link-properties">
                     Properties
                   </Link>
-                  <Link href="/" className="text-foreground hover:text-primary transition-colors" data-testid="link-services">
+                  <Link href="/services" className="text-foreground hover:text-primary transition-colors" data-testid="link-services">
                     Services
                   </Link>
-                  <a href="#" className="text-foreground hover:text-primary transition-colors">
+                  <Link href="/premium" className="text-foreground hover:text-primary transition-colors" data-testid="link-premium">
+                    Premium
+                  </Link>
+                  <a href="#about" className="text-foreground hover:text-primary transition-colors">
                     About
                   </a>
-                  <a href="#" className="text-foreground hover:text-primary transition-colors">
+                  <a href="#contact" className="text-foreground hover:text-primary transition-colors">
                     Contact
                   </a>
                 </div>

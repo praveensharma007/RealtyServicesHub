@@ -8,6 +8,8 @@ import Login from "@/pages/login";
 import UserDashboard from "@/pages/user-dashboard";
 import OwnerDashboard from "@/pages/owner-dashboard";
 import ProviderDashboard from "@/pages/provider-dashboard";
+import ServicesPage from "@/pages/services";
+import PremiumPage from "@/pages/premium";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +20,8 @@ function Router() {
       <Route path="/user-dashboard" component={UserDashboard} />
       <Route path="/owner-dashboard" component={OwnerDashboard} />
       <Route path="/provider-dashboard" component={ProviderDashboard} />
+      <Route path="/services" component={ServicesPage} />
+      <Route path="/premium" component={PremiumPage} />
       <Route component={NotFound} />
     </Switch>
   );

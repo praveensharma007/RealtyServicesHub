@@ -285,6 +285,7 @@ export class MemStorage implements IStorage {
     const user: User = { 
       ...insertUser, 
       id, 
+      phone: insertUser.phone || null,
       createdAt: new Date() 
     };
     this.users.set(id, user);
@@ -307,12 +308,14 @@ export class MemStorage implements IStorage {
     return null;
   }
 
-  async createProperty(insertProperty: InsertProperty, ownerId: string): Promise<Property> {
+  async createProperty(insertProperty: InsertProperty, ownerId: string): Property {
     const id = randomUUID();
     const property: Property = {
       ...insertProperty,
       id,
       ownerId,
+      status: insertProperty.status || "available",
+      description: insertProperty.description || null,
       views: 0,
       likes: 0,
       createdAt: new Date()
@@ -361,8 +364,10 @@ export class MemStorage implements IStorage {
       ...insertService,
       id,
       providerId,
-      rating: "0.0",
-      totalBookings: 0,
+      description: insertService.description || null,
+      availability: insertService.availability || null,
+      rating: insertService.rating || null,
+      totalBookings: insertService.totalBookings || null,
       createdAt: new Date()
     };
     this.services.set(id, service);

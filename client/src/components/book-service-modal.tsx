@@ -20,12 +20,27 @@ const formSchema = insertBookingSchema.extend({
   scheduledDate: z.string().min(1, "Date is required"),
 });
 
+interface Service {
+  id: string;
+  providerId: string;
+  category: string;
+  title: string;
+  description: string | null;
+  priceRange: string;
+  availability: boolean | null;
+  rating: string | null;
+  totalBookings: number;
+  createdAt: Date;
+}
+
 interface BookServiceModalProps {
   isOpen: boolean;
   onClose: () => void;
+  service?: Service;
+  onSuccess?: () => void;
 }
 
-export default function BookServiceModal({ isOpen, onClose }: BookServiceModalProps) {
+export default function BookServiceModal({ isOpen, onClose, service, onSuccess }: BookServiceModalProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const authState = authManager.getState();
@@ -39,10 +54,10 @@ export default function BookServiceModal({ isOpen, onClose }: BookServiceModalPr
     resolver: zodResolver(formSchema),
     defaultValues: {
       userId: authState.user?.id || "",
-      serviceId: "",
-      providerId: "",
-      serviceTitle: "",
-      serviceCategory: "",
+      serviceId: service?.id || "",
+      providerId: service?.providerId || "",
+      serviceTitle: service?.title || "",
+      serviceCategory: service?.category || "",
       customerName: authState.user?.name || "",
       customerPhone: authState.user?.phone ?? "",
       customerAddress: "",
@@ -95,6 +110,9 @@ export default function BookServiceModal({ isOpen, onClose }: BookServiceModalPr
   const handleClose = () => {
     form.reset();
     onClose();
+    if (onSuccess) {
+      onSuccess();
+    }
   };
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
@@ -113,9 +131,44 @@ export default function BookServiceModal({ isOpen, onClose }: BookServiceModalPr
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl text-center">Book a Service</DialogTitle>
+        <DialogHeader className="mb-6">
+          <DialogTitle className="text-2xl text-center">
+            {service ? `Book ${service.title}` : "Book a Service"}
+          </DialogTitle>
         </DialogHeader>
+
+        {service && (
+          <div className="bg-muted/50 p-4 rounded-lg mb-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex justify-between">
+                <span className="font-medium text-muted-foreground">Service:</span>
+                <span className="text-primary font-semibold">{service.title}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium text-muted-foreground">Price Range:</span>
+                <span className="text-green-600 font-semibold">{service.priceRange}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium text-muted-foreground">Category:</span>
+                <span className="capitalize">{service.category}</span>
+              </div>
+              {service.rating && (
+                <div className="flex justify-between">
+                  <span className="font-medium text-muted-foreground">Rating:</span>
+                  <div className="flex items-center">
+                    <span className="text-yellow-500">★</span>
+                    <span className="ml-1">{service.rating}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+            {service.description && (
+              <div className="mt-3 pt-3 border-t border-border">
+                <p className="text-sm text-muted-foreground">{service.description}</p>
+              </div>
+            )}
+          </div>
+        )}
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

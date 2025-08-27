@@ -1,4 +1,5 @@
 import { Wrench, Zap, Building2, Stethoscope, ShoppingCart, Car } from "lucide-react";
+import { useLocation } from "wouter";
 
 const serviceCategories = [
   {
@@ -6,40 +7,51 @@ const serviceCategories = [
     title: "Plumbing",
     description: "Professional plumbers",
     color: "bg-blue-100 text-blue-600",
+    category: "plumbing",
   },
   {
     icon: Zap,
     title: "Electrical",
     description: "Certified electricians",
     color: "bg-yellow-100 text-yellow-600",
+    category: "electrical",
   },
   {
     icon: Building2,
     title: "Hospital",
     description: "Medical facilities",
     color: "bg-red-100 text-red-600",
+    category: "hospital",
   },
   {
     icon: Stethoscope,
     title: "Doctor",
     description: "Healthcare professionals",
     color: "bg-green-100 text-green-600",
+    category: "doctor",
   },
   {
     icon: ShoppingCart,
     title: "Grocery",
     description: "Fresh delivery",
     color: "bg-purple-100 text-purple-600",
+    category: "grocery",
   },
   {
     icon: Car,
     title: "Cab",
     description: "Premium transport",
     color: "bg-orange-100 text-orange-600",
+    category: "cab",
   },
 ];
 
 export default function ServiceCategories() {
+  const [, setLocation] = useLocation();
+
+  const handleCategoryClick = (category: string) => {
+    setLocation(`/services?category=${category}`);
+  };
   return (
     <section className="py-16 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,7 +70,8 @@ export default function ServiceCategories() {
             return (
               <div
                 key={index}
-                className="bg-card rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-border"
+                onClick={() => handleCategoryClick(category.category)}
+                className="bg-card rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-border hover:border-primary"
                 data-testid={`card-service-${category.title.toLowerCase()}`}
               >
                 <div className="text-center">
