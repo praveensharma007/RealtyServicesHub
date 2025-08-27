@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/navigation";
 import BookingCard from "@/components/booking-card";
+import AddServiceModal from "@/components/add-service-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,6 +14,7 @@ import { useLocation } from "wouter";
 export default function ProviderDashboard() {
   const [, setLocation] = useLocation();
   const [authState, setAuthState] = useState(authManager.getState());
+  const [showAddService, setShowAddService] = useState(false);
 
   useEffect(() => {
     const unsubscribe = authManager.subscribe(setAuthState);
@@ -92,7 +94,11 @@ export default function ProviderDashboard() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <Button className="bg-purple-500 hover:bg-purple-600 text-white" data-testid="button-add-service">
+              <Button 
+                onClick={() => setShowAddService(true)}
+                className="bg-purple-500 hover:bg-purple-600 text-white" 
+                data-testid="button-add-service"
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Service
               </Button>
@@ -181,6 +187,7 @@ export default function ProviderDashboard() {
                         No services listed yet. Add your first service to start receiving bookings!
                       </p>
                       <Button 
+                        onClick={() => setShowAddService(true)}
                         className="mt-4 bg-purple-500 hover:bg-purple-600 text-white"
                         data-testid="button-add-first-service"
                       >
@@ -349,6 +356,11 @@ export default function ProviderDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <AddServiceModal 
+        isOpen={showAddService}
+        onClose={() => setShowAddService(false)}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/navigation";
 import BookingCard from "@/components/booking-card";
 import PropertyCard from "@/components/property-card";
+import BookServiceModal from "@/components/book-service-modal";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus } from "lucide-react";
@@ -13,6 +14,7 @@ import { useLocation } from "wouter";
 export default function UserDashboard() {
   const [, setLocation] = useLocation();
   const [authState, setAuthState] = useState(authManager.getState());
+  const [showBookService, setShowBookService] = useState(false);
 
   useEffect(() => {
     const unsubscribe = authManager.subscribe(setAuthState);
@@ -67,7 +69,11 @@ export default function UserDashboard() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <Button className="bg-green-500 hover:bg-green-600 text-white" data-testid="button-book-service">
+              <Button 
+                onClick={() => setShowBookService(true)}
+                className="bg-green-500 hover:bg-green-600 text-white" 
+                data-testid="button-book-service"
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Book Service
               </Button>
@@ -194,6 +200,11 @@ export default function UserDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <BookServiceModal 
+        isOpen={showBookService}
+        onClose={() => setShowBookService(false)}
+      />
     </div>
   );
 }

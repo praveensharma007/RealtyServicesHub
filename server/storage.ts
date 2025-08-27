@@ -54,6 +54,232 @@ export class MemStorage implements IStorage {
   private propertyLikes: Map<string, PropertyLike> = new Map();
   private propertyViews: Map<string, PropertyView> = new Map();
 
+  constructor() {
+    this.initializeSampleData();
+  }
+
+  private initializeSampleData() {
+    // Create sample service providers
+    const sampleProviders = [
+      {
+        id: "provider-1",
+        email: "john.plumber@example.com",
+        password: "password123",
+        role: "provider" as const,
+        name: "John's Plumbing Services",
+        phone: "+1-555-0101",
+        createdAt: new Date(),
+      },
+      {
+        id: "provider-2", 
+        email: "sarah.electric@example.com",
+        password: "password123",
+        role: "provider" as const,
+        name: "Sarah's Electrical Solutions",
+        phone: "+1-555-0102",
+        createdAt: new Date(),
+      },
+      {
+        id: "provider-3",
+        email: "mike.transport@example.com",
+        password: "password123", 
+        role: "provider" as const,
+        name: "Mike's Premium Cab Service",
+        phone: "+1-555-0103",
+        createdAt: new Date(),
+      }
+    ];
+
+    // Create sample property owners
+    const sampleOwners = [
+      {
+        id: "owner-1",
+        email: "lisa.properties@example.com",
+        password: "password123",
+        role: "owner" as const,
+        name: "Lisa Property Management",
+        phone: "+1-555-0201",
+        createdAt: new Date(),
+      },
+      {
+        id: "owner-2",
+        email: "robert.estates@example.com", 
+        password: "password123",
+        role: "owner" as const,
+        name: "Robert Real Estate",
+        phone: "+1-555-0202",
+        createdAt: new Date(),
+      }
+    ];
+
+    // Add users to storage
+    [...sampleProviders, ...sampleOwners].forEach(user => {
+      this.users.set(user.id, user);
+    });
+
+    // Create sample services
+    const sampleServices = [
+      {
+        id: "service-1",
+        providerId: "provider-1",
+        category: "plumbing" as const,
+        title: "Emergency Plumbing Repair",
+        description: "24/7 emergency plumbing services for residential and commercial properties. Expert in pipe repairs, leak detection, and drain cleaning.",
+        priceRange: "$80-150/hour",
+        availability: true,
+        rating: "4.8",
+        totalBookings: 25,
+        createdAt: new Date(),
+      },
+      {
+        id: "service-2",
+        providerId: "provider-1",
+        category: "plumbing" as const,
+        title: "Bathroom Renovation Plumbing",
+        description: "Complete plumbing solutions for bathroom renovations including fixture installation and pipe relocation.",
+        priceRange: "$200-500/project",
+        availability: true,
+        rating: "4.9",
+        totalBookings: 12,
+        createdAt: new Date(),
+      },
+      {
+        id: "service-3",
+        providerId: "provider-2",
+        category: "electrical" as const,
+        title: "Home Electrical Inspection",
+        description: "Comprehensive electrical safety inspections for residential properties. Licensed and insured electrician.",
+        priceRange: "$120-200/inspection",
+        availability: true,
+        rating: "4.7",
+        totalBookings: 18,
+        createdAt: new Date(),
+      },
+      {
+        id: "service-4",
+        providerId: "provider-2",
+        category: "electrical" as const,
+        title: "Electrical Panel Upgrade",
+        description: "Professional electrical panel upgrades and circuit breaker installations for safer electrical systems.",
+        priceRange: "$800-1500/project",
+        availability: true,
+        rating: "4.9",
+        totalBookings: 8,
+        createdAt: new Date(),
+      },
+      {
+        id: "service-5",
+        providerId: "provider-3",
+        category: "cab" as const,
+        title: "Premium Airport Transfer",
+        description: "Luxury airport transfer service with professional drivers and premium vehicles. Available 24/7.",
+        priceRange: "$45-80/trip",
+        availability: true,
+        rating: "4.8",
+        totalBookings: 156,
+        createdAt: new Date(),
+      },
+      {
+        id: "service-6",
+        providerId: "provider-3",
+        category: "cab" as const,
+        title: "City Tour Service",
+        description: "Guided city tours with knowledgeable local drivers. Comfortable vehicles and flexible schedules.",
+        priceRange: "$35-60/hour",
+        availability: true,
+        rating: "4.6",
+        totalBookings: 67,
+        createdAt: new Date(),
+      }
+    ];
+
+    // Add services to storage
+    sampleServices.forEach(service => {
+      this.services.set(service.id, service);
+    });
+
+    // Create sample properties
+    const sampleProperties = [
+      {
+        id: "property-1",
+        ownerId: "owner-1",
+        title: "Modern Downtown Apartment",
+        description: "Luxurious 2-bedroom apartment in the heart of downtown with stunning city views and premium amenities.",
+        propertyType: "apartment",
+        bedrooms: 2,
+        bathrooms: 2,
+        squareFeet: 1200,
+        address: "123 Main Street, Downtown District, Metro City",
+        monthlyRent: "2800.00",
+        contactNumber: "+1-555-0201",
+        images: [],
+        status: "available" as const,
+        views: 45,
+        likes: 12,
+        createdAt: new Date(),
+      },
+      {
+        id: "property-2",
+        ownerId: "owner-1", 
+        title: "Spacious Family House",
+        description: "Beautiful 4-bedroom family house with large backyard, garage, and modern kitchen. Perfect for families.",
+        propertyType: "house",
+        bedrooms: 4,
+        bathrooms: 3,
+        squareFeet: 2400,
+        address: "456 Oak Avenue, Suburban Heights, Metro City",
+        monthlyRent: "3500.00",
+        contactNumber: "+1-555-0201",
+        images: [],
+        status: "available" as const,
+        views: 78,
+        likes: 23,
+        createdAt: new Date(),
+      },
+      {
+        id: "property-3",
+        ownerId: "owner-2",
+        title: "Cozy Studio Loft",
+        description: "Charming studio loft with exposed brick walls, high ceilings, and modern amenities. Great for young professionals.",
+        propertyType: "studio",
+        bedrooms: 0,
+        bathrooms: 1,
+        squareFeet: 650,
+        address: "789 Industrial Way, Arts District, Metro City",
+        monthlyRent: "1800.00",
+        contactNumber: "+1-555-0202",
+        images: [],
+        status: "pending" as const,
+        views: 34,
+        likes: 8,
+        createdAt: new Date(),
+      },
+      {
+        id: "property-4",
+        ownerId: "owner-2",
+        title: "Luxury Penthouse Condo",
+        description: "Exclusive penthouse condo with panoramic city views, private terrace, and premium finishes throughout.",
+        propertyType: "condo",
+        bedrooms: 3,
+        bathrooms: 3,
+        squareFeet: 1800,
+        address: "321 Skyline Drive, Uptown Elite, Metro City",
+        monthlyRent: "5200.00",
+        contactNumber: "+1-555-0202",
+        images: [],
+        status: "available" as const,
+        views: 92,
+        likes: 31,
+        createdAt: new Date(),
+      }
+    ];
+
+    // Add properties to storage
+    sampleProperties.forEach(property => {
+      this.properties.set(property.id, property);
+    });
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
     const user: User = { 

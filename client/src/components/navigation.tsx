@@ -57,15 +57,11 @@ export default function Navigation() {
               </div>
               <div className="hidden md:block ml-10">
                 <div className="flex items-baseline space-x-8">
-                  <Link href="/">
-                    <a className="text-foreground hover:text-primary transition-colors" data-testid="link-properties">
-                      Properties
-                    </a>
+                  <Link href="/" className="text-foreground hover:text-primary transition-colors" data-testid="link-properties">
+                    Properties
                   </Link>
-                  <Link href="/">
-                    <a className="text-foreground hover:text-primary transition-colors" data-testid="link-services">
-                      Services
-                    </a>
+                  <Link href="/" className="text-foreground hover:text-primary transition-colors" data-testid="link-services">
+                    Services
                   </Link>
                   <a href="#" className="text-foreground hover:text-primary transition-colors">
                     About
@@ -109,15 +105,11 @@ export default function Navigation() {
           {isOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <Link href="/">
-                  <a className="block px-3 py-2 text-foreground hover:text-primary transition-colors">
-                    Properties
-                  </a>
+                <Link href="/" className="block px-3 py-2 text-foreground hover:text-primary transition-colors">
+                  Properties
                 </Link>
-                <Link href="/">
-                  <a className="block px-3 py-2 text-foreground hover:text-primary transition-colors">
-                    Services
-                  </a>
+                <Link href="/" className="block px-3 py-2 text-foreground hover:text-primary transition-colors">
+                  Services
                 </Link>
                 <a href="#" className="block px-3 py-2 text-foreground hover:text-primary transition-colors">
                   About
