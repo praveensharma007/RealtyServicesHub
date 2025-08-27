@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { insertServiceSchema } from "@shared/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { CloudUpload } from "lucide-react";
 import { authManager } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
@@ -23,6 +24,7 @@ export default function AddServiceModal({ isOpen, onClose }: AddServiceModalProp
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const authState = authManager.getState();
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   type ServiceFormData = z.infer<typeof insertServiceSchema>;
 
@@ -63,8 +65,26 @@ export default function AddServiceModal({ isOpen, onClose }: AddServiceModalProp
     },
   });
 
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length + selectedImages.length > 5) {
+      toast({
+        title: "Too many images",
+        description: "Maximum 5 images allowed per service",
+        variant: "destructive",
+      });
+      return;
+    }
+    setSelectedImages(prev => [...prev, ...files]);
+  };
+
+  const removeImage = (index: number) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleClose = () => {
     form.reset();
+    setSelectedImages([]);
     onClose();
   };
 
@@ -195,6 +215,56 @@ export default function AddServiceModal({ isOpen, onClose }: AddServiceModalProp
                   </FormItem>
                 )}
               />
+            </div>
+
+            <div>
+              <Label>Service Images (Max 5)</Label>
+              <div className="border-2 border-dashed border-border rounded-lg p-6 text-center mt-2">
+                <CloudUpload className="mx-auto h-10 w-10 text-muted-foreground mb-3" />
+                <p className="text-muted-foreground mb-2">
+                  Add photos of your work, certificates, or equipment
+                </p>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  className="hidden"
+                  id="service-image-upload"
+                  data-testid="input-service-images"
+                />
+                <Button 
+                  type="button" 
+                  variant="outline"
+                  onClick={() => document.getElementById('service-image-upload')?.click()}
+                >
+                  Select Images
+                </Button>
+              </div>
+              {selectedImages.length > 0 && (
+                <div className="mt-4">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Selected images: {selectedImages.length}/5
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedImages.map((file, index) => (
+                      <div key={index} className="relative">
+                        <span className="inline-block bg-secondary px-2 py-1 rounded text-sm">
+                          {file.name}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="ml-1 text-destructive hover:text-destructive/80"
+                          data-testid={`button-remove-service-image-${index}`}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="bg-muted/30 p-4 rounded-lg">

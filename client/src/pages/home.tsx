@@ -3,6 +3,8 @@ import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
 import ServiceCategories from "@/components/service-categories";
 import FeaturedProperties from "@/components/featured-properties";
+import PremiumPackages from "@/components/premium-packages";
+import Footer from "@/components/footer";
 import { Shield, Clock, Star } from "lucide-react";
 import { authManager } from "@/lib/auth";
 import { useLocation } from "wouter";
@@ -16,21 +18,7 @@ export default function Home() {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    if (authState.isAuthenticated && authState.user) {
-      switch (authState.user.role) {
-        case "user":
-          setLocation("/user-dashboard");
-          break;
-        case "owner":
-          setLocation("/owner-dashboard");
-          break;
-        case "provider":
-          setLocation("/provider-dashboard");
-          break;
-      }
-    }
-  }, [authState, setLocation]);
+  // Removed auto-redirect logic to allow all users to view home page
 
   return (
     <div className="min-h-screen bg-background">
@@ -41,6 +29,8 @@ export default function Home() {
       <ServiceCategories />
       
       <FeaturedProperties />
+      
+      <PremiumPackages />
 
       {/* Premium Features Section */}
       <section className="py-16 bg-background">
@@ -87,6 +77,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

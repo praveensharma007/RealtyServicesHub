@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { authManager } from "@/lib/auth";
 import RoleSelector from "./role-selector";
+import ProfileDropdown from "./profile-dropdown";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -22,19 +23,12 @@ export default function Navigation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary">PropServe</h1>
+              <Link href="/">
+                <h1 className="text-2xl font-bold text-primary cursor-pointer">PropServe</h1>
+              </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-muted-foreground">
-                Welcome, {authState.user?.name}
-              </span>
-              <Button 
-                variant="ghost" 
-                onClick={handleSignOut}
-                data-testid="button-signout"
-              >
-                Sign Out
-              </Button>
+              <ProfileDropdown />
             </div>
           </div>
         </div>
@@ -74,19 +68,25 @@ export default function Navigation() {
             </div>
             <div className="hidden md:block">
               <div className="flex items-center space-x-4">
-                <Button 
-                  onClick={() => setShowRoleSelector(true)}
-                  data-testid="button-signin"
-                >
-                  Sign In
-                </Button>
-                <Button 
-                  variant="secondary"
-                  onClick={() => setShowRoleSelector(true)}
-                  data-testid="button-register"
-                >
-                  Register
-                </Button>
+                {authState.isAuthenticated ? (
+                  <ProfileDropdown />
+                ) : (
+                  <>
+                    <Button 
+                      onClick={() => setShowRoleSelector(true)}
+                      data-testid="button-signin"
+                    >
+                      Sign In
+                    </Button>
+                    <Button 
+                      variant="secondary"
+                      onClick={() => setShowRoleSelector(true)}
+                      data-testid="button-register"
+                    >
+                      Register
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
             <div className="md:hidden">

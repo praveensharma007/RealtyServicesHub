@@ -341,6 +341,7 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
                       placeholder="Describe your property" 
                       className="min-h-[100px]"
                       {...field}
+                      value={field.value ?? ""}
                       data-testid="textarea-description"
                     />
                   </FormControl>
